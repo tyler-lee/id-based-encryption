@@ -31,13 +31,13 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-    IBE_setup(params, master, 512, 160, "test");
+    IBE_setup(params, master, 2048, 256, "test");
 
     IBE_keygen(priv, pub, params);
 
     IBE_keygen(priv2, pub2, params);
 
-    byte_string_set(message, "Hello, World");
+    byte_string_set(message, "12345678901234567890123456789012");
 
     //Rather than work out the certifcate directly from the master key,
     //I'll demonstrate how secret sharing works.
@@ -57,43 +57,59 @@ int main(int argc, char **argv)
 
 
 
-    printf("message: ");
-    byte_string_fprintf(stdout, message, " %02X");
-    printf("\n");
+    /*printf("message: ");*/
+    /*byte_string_fprintf(stdout, message, " %02X");*/
+    /*printf("\n");*/
 
-    printf("priv: ");
-    byte_string_fprintf(stdout, priv, " %02X");
-    printf("\n");
+    /*printf("priv: ");*/
+    /*byte_string_fprintf(stdout, priv, " %02X");*/
+    /*printf("\n");*/
 
-    printf("cert: ");
-    byte_string_fprintf(stdout, cert, " %02X");
-    printf("\n");
+    /*printf("cert: ");*/
+    /*byte_string_fprintf(stdout, cert, " %02X");*/
+    /*printf("\n");*/
 
-    printf("params: ");
-    printf("\n");
+    /*printf("params: ");*/
+    /*printf("\n");*/
 
-    IBE_sign(sig, message, priv, cert, params);
+	clock_t t1, t2;
+	int count = 100;
+	t1 = clock();
+	for(int i=0; i<count; ++i) {
+		IBE_sign(sig, message, priv, cert, params);
+	}
+	t2 = clock();
+	printf("sign: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
 
-    printf("sig: ");
-    byte_string_fprintf(stdout, sig, " %02X");
-    printf("\n");
 
-    printf("pub: ");
-    byte_string_fprintf(stdout, pub, " %02X");
-    printf("\n");
+    /*printf("sig: ");*/
+    /*byte_string_fprintf(stdout, sig, " %02X");*/
+    /*printf("\n");*/
 
-    printf("id: ");
-    printf(" %s", id);
-    printf("\n");
+    /*printf("pub: ");*/
+    /*byte_string_fprintf(stdout, pub, " %02X");*/
+    /*printf("\n");*/
 
-    if (IBE_verify(sig, message, pub, id, params)) {
-	printf("signature verifies\n");
-    } else {
-	printf("bug: signature does not verify\n");
-    }
+    /*printf("id: ");*/
+    /*printf(" %s", id);*/
+    /*printf("\n");*/
+
+	result = 1;
+	t1 = clock();
+	for(int i=0; i<count; ++i) {
+		result &= IBE_verify(sig, message, pub, id, params);
+	}
+	t2 = clock();
+	printf("sign: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
+
+	if (result) {
+		printf("signature verifies\n");
+	} else {
+		printf("bug: signature does not verify\n");
+	}
 
     if (IBE_verify(sig, message, pub2, id, params)) {
-	printf("bug: signature verifies with wrong public key\n");
+		printf("bug: signature verifies with wrong public key\n");
     }
 
     params_clear(params);
