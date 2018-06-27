@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-    IBE_setup(params, master, 2048, 256, "test");
+    IBE_setup(params, master, 2048, 620, "test");
 
     IBE_keygen(priv, pub, params);
 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 		result &= IBE_verify(sig, message, pub, id, params);
 	}
 	t2 = clock();
-	printf("sign: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
+	printf("verify: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
 
 	if (result) {
 		printf("signature verifies\n");
