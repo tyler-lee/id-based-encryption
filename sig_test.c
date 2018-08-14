@@ -12,6 +12,7 @@ See LICENSE for license
 #include "ibe.h"
 #include "format.h"
 #include "crypto.h"
+#include "benchmark.h"	//for bm_report_*
 
 int main(int argc, char **argv)
 {
@@ -31,7 +32,8 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-    IBE_setup(params, master, 2048, 620, "test");
+    /*IBE_setup(params, master, 2048, 620, "test");*/
+    IBE_setup(params, master, 1024, 384, "test");
 
     IBE_keygen(priv, pub, params);
 
@@ -124,6 +126,9 @@ int main(int argc, char **argv)
     byte_string_clear(mshare[1]);
     byte_string_clear(message);
     byte_string_clear(sig);
+
+	bm_report_encrypt();
+	bm_report_decrypt();
 
     IBE_clear();
 
