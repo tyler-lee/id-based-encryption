@@ -166,7 +166,7 @@ bs_test: bs_test.o byte_string.o $(OPT_LIBS)
 bls_test: bls_test.o $(IBE_LIBS)
 	$(CC) $(CFLAGS) -o $@ $^ $(GMP_LIBS) $(CRYPTO_LIBS)
 
-sig_test: sig_test.o $(IBE_LIBS)
+sig_test: benchmark.h mm.h sig_test.o $(IBE_LIBS)
 	$(CC) $(CFLAGS) -o $@ $^ $(GMP_LIBS) $(CRYPTO_LIBS)
 
 torture: torture.o $(IBE_LIBS)
