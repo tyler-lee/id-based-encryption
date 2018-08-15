@@ -43,6 +43,7 @@ int verify(int argc, char **argv)
     msg = argv[3];
     byte_string_set(message, msg);
 
+	//TODO: verify
     if (IBE_verify(sig, message, pub, id, params)) {
         result = 1;
         printf("Signature verifies: %d", result);

@@ -32,8 +32,8 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-    /*IBE_setup(params, master, 2048, 620, "test");*/
-    IBE_setup(params, master, 1024, 384, "test");
+	IBE_setup(params, master, 2048, 620, "test");
+    /*IBE_setup(params, master, 1024, 384, "test");*/
 
     IBE_keygen(priv, pub, params);
 
@@ -74,14 +74,20 @@ int main(int argc, char **argv)
     /*printf("params: ");*/
     /*printf("\n");*/
 
-	clock_t t1, t2;
 	int count = 100;
-	t1 = clock();
+	result = 1;
 	for(int i=0; i<count; ++i) {
 		IBE_sign(sig, message, priv, cert, params);
+		result &= IBE_verify(sig, message, pub, id, params);
 	}
-	t2 = clock();
-	printf("sign: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
+
+	/*clock_t t1, t2;*/
+	/*t1 = clock();*/
+	/*for(int i=0; i<count; ++i) {*/
+		/*IBE_sign(sig, message, priv, cert, params);*/
+	/*}*/
+	/*t2 = clock();*/
+	/*printf("sign: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);*/
 
 
     /*printf("sig: ");*/
@@ -96,15 +102,14 @@ int main(int argc, char **argv)
     /*printf(" %s", id);*/
     /*printf("\n");*/
 
-	result = 1;
-	t1 = clock();
-	for(int i=0; i<count; ++i) {
-		result &= IBE_verify(sig, message, pub, id, params);
-	}
-	t2 = clock();
-	printf("verify: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);
+	/*t1 = clock();*/
+	/*for(int i=0; i<count; ++i) {*/
+		/*result &= IBE_verify(sig, message, pub, id, params);*/
+	/*}*/
+	/*t2 = clock();*/
+	/*printf("verify: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);*/
 
-	if (result) {
+	if (!result) {
 		printf("signature verifies\n");
 	} else {
 		printf("bug: signature does not verify\n");
@@ -113,6 +118,9 @@ int main(int argc, char **argv)
     if (IBE_verify(sig, message, pub2, id, params)) {
 		printf("bug: signature verifies with wrong public key\n");
     }
+
+    fprintf(stderr, "sign time: %lf\n", bm_get("sign1") - bm_get("sign0"));
+    fprintf(stderr, "verify time: %lf\n", bm_get("verify1") - bm_get("verify0"));
 
     params_clear(params);
 
@@ -126,9 +134,6 @@ int main(int argc, char **argv)
     byte_string_clear(mshare[1]);
     byte_string_clear(message);
     byte_string_clear(sig);
-
-	bm_report_encrypt();
-	bm_report_decrypt();
 
     IBE_clear();
 

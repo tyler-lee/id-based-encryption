@@ -681,13 +681,16 @@ void IBE_KEM_encrypt(byte_string_t secret,
 {
     byte_string_t s[1];
 
+    bm_put(bm_get_time(), "ibe-encrypt0");
     IBE_KEM_encrypt_array(s, U, &id, 1, params);
+    bm_put(bm_get_time(), "ibe-encrypt1");
     byte_string_assign(secret, s[0]);
 }
 
 void IBE_KEM_decrypt(byte_string_t s,
 	byte_string_t U, byte_string_t key, params_t params)
 {
+    bm_put(bm_get_time(), "ibe-decrypt0");
     point_t xQ, rP;
     fp2_t res;
 
@@ -706,6 +709,7 @@ void IBE_KEM_decrypt(byte_string_t s,
     fp2_clear(res);
     point_clear(xQ);
     point_clear(rP);
+    bm_put(bm_get_time(), "ibe-decrypt1");
 }
 
 void IBE_get_shared_secret(byte_string_t s,
@@ -1141,6 +1145,7 @@ void IBE_certify(byte_string_t cert, byte_string_t master,
 void IBE_sign(byte_string_t sig, byte_string_t message, byte_string_t private,
 	byte_string_t cert, params_t params)
 {
+    bm_put(bm_get_time(), "sign0");
     mpz_t x;
     point_t P, xP, C;
 
@@ -1165,11 +1170,13 @@ void IBE_sign(byte_string_t sig, byte_string_t message, byte_string_t private,
     point_clear(P);
     point_clear(xP);
     point_clear(C);
+    bm_put(bm_get_time(), "sign1");
 }
 
 int IBE_verify(byte_string_t sig, byte_string_t message, byte_string_t public,
 	const char *id, params_t params)
 {
+    bm_put(bm_get_time(), "verify0");
     int result;
 
     point_t P, Q;
@@ -1217,6 +1224,7 @@ int IBE_verify(byte_string_t sig, byte_string_t message, byte_string_t public,
     point_clear(P); point_clear(Q);
     fp2_clear(f1); fp2_clear(f2); fp2_clear(f3);
 
+    bm_put(bm_get_time(), "verify1");
     return result;
 }
 

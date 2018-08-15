@@ -117,6 +117,7 @@ static void mime_get(byte_string_t bs, FILE *infp)
     byte_string_reinit(bs, l + l2);
 }
 
+//TODO: encrypt
 void FMT_encrypt_stream_array(char **id, int idcount,
 	FILE *infp, FILE *outfp, params_t params)
 {
@@ -188,6 +189,7 @@ void FMT_encrypt_stream(char *id, FILE *infp, FILE *outfp, params_t params)
     FMT_encrypt_stream_array(&id, 1, infp, outfp, params);
 }
 
+//TODO: decrypt
 int FMT_decrypt_stream(char *id, byte_string_t key,
 	FILE *infp, FILE *outfp, params_t params)
 {

@@ -51,6 +51,7 @@ int sign(int argc, char **argv)
     msg = argv[3];
     byte_string_set(message, msg);
 
+	//TODO: sign
     IBE_sign(sig, message, key, cert,  params);
 
     FMT_crypt_save("sig.out", sig, "password");
