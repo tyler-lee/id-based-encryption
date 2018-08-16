@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-	IBE_setup(params, master, 2048, 620, "test");
+	IBE_setup(params, master, 2048, 256, "test");
     /*IBE_setup(params, master, 1024, 384, "test");*/
 
     IBE_keygen(priv, pub, params);
@@ -76,14 +76,23 @@ int main(int argc, char **argv)
 
 	int count = 100;
 	result = 1;
+	double totalSign = 0;
+	double totalVerify = 0;
 	for(int i=0; i<count; ++i) {
+		bm_put(bm_get_time(), "t0");
 		IBE_sign(sig, message, priv, cert, params);
+		bm_put(bm_get_time(), "t1");
 		result &= IBE_verify(sig, message, pub, id, params);
+		bm_put(bm_get_time(), "t2");
+		totalSign += (bm_get("t1") - bm_get("t0"));
+		totalVerify += (bm_get("t2") - bm_get("t1"));
 	}
+    fprintf(stdout, "sign time: %lf\n", totalSign / count);
+    fprintf(stdout, "verify time: %lf\n", totalVerify / count);
+
 
 	/*clock_t t1, t2;*/
-	/*t1 = clock();*/
-	/*for(int i=0; i<count; ++i) {*/
+	/*t1 = clock();*/ /*for(int i=0; i<count; ++i) {*/
 		/*IBE_sign(sig, message, priv, cert, params);*/
 	/*}*/
 	/*t2 = clock();*/
@@ -109,18 +118,15 @@ int main(int argc, char **argv)
 	/*t2 = clock();*/
 	/*printf("verify: %f seconds\n", 1.0 * (t2-t1) / 1000000.0 / count);*/
 
-	if (!result) {
-		printf("signature verifies\n");
-	} else {
-		printf("bug: signature does not verify\n");
-	}
+	/*if (!result) {*/
+		/*printf("signature verifies\n");*/
+	/*} else {*/
+		/*printf("bug: signature does not verify\n");*/
+	/*}*/
 
     if (IBE_verify(sig, message, pub2, id, params)) {
 		printf("bug: signature verifies with wrong public key\n");
     }
-
-    fprintf(stderr, "sign time: %lf\n", bm_get("sign1") - bm_get("sign0"));
-    fprintf(stderr, "verify time: %lf\n", bm_get("verify1") - bm_get("verify0"));
 
     params_clear(params);
 
