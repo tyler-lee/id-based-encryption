@@ -32,7 +32,8 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-	IBE_setup(params, master, 2048, 256, "test");
+	/*IBE_setup(params, master, 2048, 224, "test");*/
+	IBE_setup(params, master, 3072, 256, "test");
     /*IBE_setup(params, master, 1024, 384, "test");*/
 
     IBE_keygen(priv, pub, params);
@@ -74,7 +75,7 @@ int main(int argc, char **argv)
     /*printf("params: ");*/
     /*printf("\n");*/
 
-	int count = 100;
+	int count = 200;
 	result = 1;
 	double totalSign = 0;
 	double totalVerify = 0;
@@ -87,8 +88,8 @@ int main(int argc, char **argv)
 		totalSign += (bm_get("t1") - bm_get("t0"));
 		totalVerify += (bm_get("t2") - bm_get("t1"));
 	}
-    fprintf(stdout, "sign time: %lf\n", totalSign / count);
-    fprintf(stdout, "verify time: %lf\n", totalVerify / count);
+    fprintf(stdout, "sign time: %lf\n", 1000.0 * totalSign / count);
+    fprintf(stdout, "verify time: %lf\n", 1000.0 * totalVerify / count);
 
 
 	/*clock_t t1, t2;*/
