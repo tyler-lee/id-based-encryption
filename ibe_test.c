@@ -25,8 +25,9 @@ int main(void)
     //128-bit prime, 64-bit subgroup size
 
     /*IBE_setup(params, master, 512, 160, "test");*/
-	IBE_setup(params, master, 1024, 224, "test");
+	/*IBE_setup(params, master, 1024, 224, "test");*/
 	/*IBE_setup(params, master, 1536, 256, "test");*/
+	IBE_setup(params, master, 3840, 384, "test");
 
     id = "blynn@stanford.edu";
 
