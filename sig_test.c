@@ -32,9 +32,8 @@ int main(int argc, char **argv)
 
     IBE_init();
 
-	/*IBE_setup(params, master, 2048, 224, "test");*/
 	IBE_setup(params, master, 3072, 256, "test");
-    /*IBE_setup(params, master, 1024, 384, "test");*/
+	/*IBE_setup(params, master, 512, 160, "test");*/
 
     IBE_keygen(priv, pub, params);
 
@@ -75,7 +74,7 @@ int main(int argc, char **argv)
     /*printf("params: ");*/
     /*printf("\n");*/
 
-	int count = 200;
+	int count = 100;
 	result = 1;
 	double totalSign = 0;
 	double totalVerify = 0;
